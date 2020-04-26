@@ -45,6 +45,7 @@ const container = document.querySelector('.places-list');
 const buttonOpenNewCard = document.querySelector('.user-info__button');
 const popup = document.querySelector('.popup');
 const popupClose = document.querySelector('.popup__close');
+const form = document.forms.new;
 
 
 
@@ -91,16 +92,26 @@ function likeHandler(event) {
   }
 }
 
-function popupOpenHandler() {
-  popup.classList.add('popup_is-opened');
+function popupToggleHandler() {
+  popup.classList.toggle('popup_is-opened');
 }
 
-function popupCloseHandler() {
-  popup.classList.remove('popup_is-opened');
+function addNewCard(event) {
+  event.preventDefault();
+
+  const name = form.elements.name.value;
+  const link = form.elements.link.value;
+  const cardsContainer = createCard(link, name);
+
+  container.appendChild(cardsContainer);
+  form.reset();
+  popupToggleHandler();
 }
+
 
 
 
 container.addEventListener('click', likeHandler);
-buttonOpenNewCard.addEventListener('click', popupOpenHandler);
-popupClose.addEventListener('click', popupCloseHandler);
+buttonOpenNewCard.addEventListener('click', popupToggleHandler);
+popupClose.addEventListener('click', popupToggleHandler);
+form.addEventListener('submit', addNewCard);
