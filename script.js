@@ -42,10 +42,11 @@ const initialCards = [
 ];
 
 const container = document.querySelector('.places-list');
-const buttonOpenNewCard = document.querySelector('.user-info__button');
+const buttonOpenerNewCard = document.querySelector('.user-info__button');
 const popup = document.querySelector('.popup');
-const popupClose = document.querySelector('.popup__close');
+const popupCloser = document.querySelector('.popup__close');
 const form = document.forms.new;
+
 
 
 
@@ -108,10 +109,17 @@ function addNewCard(event) {
   popupToggleHandler();
 }
 
+function removeHandler(event) {
+  if (event.target.classList.contains('place-card__delete-icon')) {
+    const parent = event.target.closest('.place-card');
+    container.removeChild(parent);
+  }
+}
 
 
 
 container.addEventListener('click', likeHandler);
-buttonOpenNewCard.addEventListener('click', popupToggleHandler);
-popupClose.addEventListener('click', popupToggleHandler);
+buttonOpenerNewCard.addEventListener('click', popupToggleHandler);
+popupCloser.addEventListener('click', popupToggleHandler);
 form.addEventListener('submit', addNewCard);
+container.addEventListener('click', removeHandler);
