@@ -42,6 +42,11 @@ const initialCards = [
 ];
 
 const container = document.querySelector('.places-list');
+const buttonOpenNewCard = document.querySelector('.user-info__button');
+const popup = document.querySelector('.popup');
+const popupClose = document.querySelector('.popup__close');
+
+
 
 
 function createCard(link, name) {
@@ -65,6 +70,7 @@ function createCard(link, name) {
   const buttonLike = document.createElement('button');
   buttonLike.classList.add('place-card__like-icon');
 
+
   cardContainer.appendChild(cardImage);
   cardContainer.appendChild(cardDescription);
   cardImage.appendChild(buttonDelete);
@@ -79,3 +85,22 @@ initialCards.forEach(function (item) {
 });
 
 
+function likeHandler(event) {
+  if (event.target.classList.contains('place-card__like-icon')) {
+    event.target.classList.toggle('place-card__like-icon_liked');
+  }
+}
+
+function popupOpenHandler() {
+  popup.classList.add('popup_is-opened');
+}
+
+function popupCloseHandler() {
+  popup.classList.remove('popup_is-opened');
+}
+
+
+
+container.addEventListener('click', likeHandler);
+buttonOpenNewCard.addEventListener('click', popupOpenHandler);
+popupClose.addEventListener('click', popupCloseHandler);
