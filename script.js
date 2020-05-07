@@ -1,45 +1,4 @@
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  },
-  {
-    name: 'Нургуш',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/khrebet-nurgush.jpg'
-  },
-  {
-    name: 'Тулиновка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/tulinovka.jpg'
-  },
-  {
-    name: 'Остров Желтухина',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/zheltukhin-island.jpg'
-  },
-  {
-    name: 'Владивосток',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/vladivostok.jpg'
-  }
-];
+'use strict'
 
 const container = document.querySelector('.places-list');
 const buttonOpenerNewCard = document.querySelector('.user-info__button');
@@ -82,10 +41,15 @@ function createCard(link, name) {
   return cardContainer;
 }
 
-initialCards.forEach(function (item) {
-  container.appendChild(createCard(item.link, item.name));
-});
+function addToCardContainer(link, name) {
+  container.appendChild(createCard(link, name));
+}
 
+function toInitialCards() {
+  initialCards.forEach((item) => {
+    addToCardContainer(item.link, item.name);
+  })
+};
 
 function likeHandler(event) {
   if (event.target.classList.contains('place-card__like-icon')) {
@@ -102,9 +66,8 @@ function addNewCard(event) {
 
   const name = form.elements.name.value;
   const link = form.elements.link.value;
-  const cardsContainer = createCard(link, name);
 
-  container.appendChild(cardsContainer);
+  addToCardContainer(link, name);
   form.reset();
   popupToggleHandler();
 }
@@ -116,10 +79,10 @@ function removeHandler(event) {
   }
 }
 
-
-
 container.addEventListener('click', likeHandler);
 buttonOpenerNewCard.addEventListener('click', popupToggleHandler);
 popupCloser.addEventListener('click', popupToggleHandler);
 form.addEventListener('submit', addNewCard);
 container.addEventListener('click', removeHandler);
+
+toInitialCards();
