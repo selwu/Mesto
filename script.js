@@ -2,7 +2,7 @@
 
 const container = document.querySelector('.places-list');
 const buttonOpenerNewCard = document.querySelector('.user-info__button');
-const popup = document.querySelector('.popup');
+const cardPopup = document.querySelector('.card-popup');
 const popupCloser = document.querySelector('.popup__close');
 const form = document.forms.new;
 
@@ -58,7 +58,7 @@ function likeHandler(event) {
 }
 
 function popupToggleHandler() {
-  popup.classList.toggle('popup_is-opened');
+  cardPopup.classList.toggle('popup_is-opened');
 }
 
 function addNewCard(event) {
