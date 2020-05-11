@@ -1,13 +1,18 @@
-'use strict'
+'use strict';
 
 const container = document.querySelector('.places-list');
 const buttonOpenerNewCard = document.querySelector('.user-info__button');
+const buttonOpenerEditProfile = document.querySelector('.user-info__edit');
 const cardPopup = document.querySelector('.card-popup');
-const popupCloser = document.querySelector('.popup__close');
-const form = document.forms.new;
+const profilePopup = document.querySelector('.profile-popup');
+const buttonCloserCard = cardPopup.querySelector('.popup__close');
+const buttonCloserProfile = profilePopup.querySelector('.popup__close');
 
+const userInfoName = document.querySelector('.user-info__name');
+const userInfoJob = document.querySelector('.user-info__job');
 
-
+const cardForm = document.forms.new;
+const editForm = document.forms.edit;
 
 
 function createCard(link, name) {
@@ -48,8 +53,8 @@ function addToCardContainer(link, name) {
 function toInitialCards() {
   initialCards.forEach((item) => {
     addToCardContainer(item.link, item.name);
-  })
-};
+  });
+}
 
 function likeHandler(event) {
   if (event.target.classList.contains('place-card__like-icon')) {
@@ -57,19 +62,22 @@ function likeHandler(event) {
   }
 }
 
-function popupToggleHandler() {
-  cardPopup.classList.toggle('popup_is-opened');
+function popupToggleHandler(popup) {
+  return () => {
+    popup.classList.toggle('popup_is-opened');
+  };
 }
+
 
 function addNewCard(event) {
   event.preventDefault();
 
-  const name = form.elements.name.value;
-  const link = form.elements.link.value;
+  const name = cardForm.elements.name.value;
+  const link = cardForm.elements.link.value;
 
   addToCardContainer(link, name);
-  form.reset();
-  popupToggleHandler();
+  cardForm.reset();
+  popupToggleHandler(cardPopup)();
 }
 
 function removeHandler(event) {
@@ -79,10 +87,27 @@ function removeHandler(event) {
   }
 }
 
-container.addEventListener('click', likeHandler);
-buttonOpenerNewCard.addEventListener('click', popupToggleHandler);
-popupCloser.addEventListener('click', popupToggleHandler);
-form.addEventListener('submit', addNewCard);
-container.addEventListener('click', removeHandler);
+function originNamesHandler() {
+  editForm.elements.nameEdit.value = userInfoName.textContent;
+  editForm.elements.jobEdit.value = userInfoJob.textContent;
+}
 
+function submitFormEdit(event) {
+  event.preventDefault();
+
+  userInfoName.textContent = editForm.elements.nameEdit.value;
+  userInfoJob.textContent = editForm.elements.jobEdit.value;
+
+  popupToggleHandler(profilePopup)();
+}
+
+container.addEventListener('click', likeHandler);
+buttonOpenerNewCard.addEventListener('click', popupToggleHandler(cardPopup));
+buttonCloserCard.addEventListener('click', popupToggleHandler(cardPopup));
+buttonOpenerEditProfile.addEventListener('click', popupToggleHandler(profilePopup));
+buttonOpenerEditProfile.addEventListener('click', originNamesHandler);
+buttonCloserProfile.addEventListener('click', popupToggleHandler(profilePopup));
+cardForm.addEventListener('submit', addNewCard);
+editForm.addEventListener('submit', submitFormEdit);
+container.addEventListener('click', removeHandler);
 toInitialCards();
