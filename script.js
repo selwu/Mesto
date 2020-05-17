@@ -78,7 +78,6 @@ function addNewCard(event) {
   const link = cardForm.elements.link.value;
 
   addToCardContainer(link, name);
-  cardForm.reset();
   popupToggleHandler(cardPopup)();
 }
 
@@ -113,6 +112,83 @@ function openerHandler(event) {
   }
 }
 
+function isValidate(input) {
+  input.setCustomValidity('');
+
+  if (input.validity.valueMissing) {
+    input.setCustomValidity('Это обязательное поле');
+    return false;
+  }
+
+  if (input.validity.tooShort) {
+    input.setCustomValidity('Должно быть от 2 до 30 символов');
+    return false;
+  }
+
+  if (input.validity.typeMismatch && input.type === 'url') {
+    input.setCustomValidity('Здесь должна быть ссылка');
+    return false;
+  }
+
+  return input.checkValidity();
+}
+
+
+function isFieldValid(input) {
+  const errorElem = input.parentNode.querySelector(`#${input.id}-error`);
+  const valid = isValidate(input);
+  errorElem.textContent = input.validationMessage;
+  return valid;
+}
+
+function setSubmitButtonState(button, state) {
+  if (state) {
+    button.removeAttribute('disabled');
+    button.classList.add('popup__button_valid');
+  } else {
+    button.setAttribute('disabled', 'true');
+    button.classList.remove('popup__button_valid');
+  }
+}
+
+function handlerInputForm(event) {
+  const submit = event.currentTarget.querySelector('.button');
+  const [...inputs] = event.currentTarget.elements;
+
+  isFieldValid(event.target);
+
+  if (inputs.every(isValidate)) {
+    setSubmitButtonState(submit, true);
+  } else {
+    setSubmitButtonState(submit, false);
+  }
+}
+
+function isFormValid(form) {
+  const inputs = Array.from(form.elements);
+  let valid = true;
+
+  inputs.forEach((input) => {
+    if (input.type !== 'submit') {
+      if (!isFieldValid(input)) valid = false;
+    }
+  });
+  return valid;
+}
+
+function sendForm(event) {
+  event.preventDefault();
+  const currentForm = event.target;
+  const isValid = isFormValid(currentForm);
+
+  if (isValid) {
+    console.log('Ok!');
+    event.target.reset();
+  } else {
+    console.log('Not ok!');
+  }
+}
+
 container.addEventListener('click', likeHandler);
 container.addEventListener('click', openerHandler);
 buttonOpenerNewCard.addEventListener('click', popupToggleHandler(cardPopup));
@@ -122,6 +198,11 @@ buttonOpenerEditProfile.addEventListener('click', originNamesHandler);
 buttonCloserProfile.addEventListener('click', popupToggleHandler(profilePopup));
 buttonCloserImage.addEventListener('click', popupToggleHandler(imagePopup));
 cardForm.addEventListener('submit', addNewCard);
+cardForm.addEventListener('submit', sendForm);
+cardForm.addEventListener('input', handlerInputForm, true);
 editForm.addEventListener('submit', submitFormEdit);
+editForm.addEventListener('submit', sendForm);
+editForm.addEventListener('input', handlerInputForm, true);
 container.addEventListener('click', removeHandler);
+
 toInitialCards();
