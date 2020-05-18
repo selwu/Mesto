@@ -191,6 +191,11 @@ function handlerInputForm(event) {
 function resetHandler(form) {
   return () => {
     form.reset();
+    const spans = form.querySelectorAll('span');
+    spans.forEach((item) => {
+      const span = item;
+      span.textContent = '';
+    });
   };
 }
 
