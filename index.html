@@ -42,10 +42,10 @@
       <div class="popup__content">
         <img src="./images/close.svg" alt="" class="popup__close">
         <h3 class="popup__title">Новое место</h3>
-        <form class="popup__form" name="new" novalidate>
+        <form class="popup__form form-card" name="new" novalidate>
           <input id="name-card" type="text" name="name" class="popup__input popup__input_type_name" minlength="2" maxlength="30" required placeholder="Название">
           <span id="name-card-error" class="error"></span>
-          <input id="url-card" type="url" name="link" class="popup__input popup__input_type_link-url" minlength="2" required placeholder="Ссылка на картинку">
+          <input id="url-card" type="url" name="link" class="popup__input popup__input_type_link-url" minlength="2" maxlength="30" required placeholder="Ссылка на картинку">
           <span id="url-card-error" class="error"></span>
           <button type="submit" class="button popup__button" disabled>+</button>
         </form>
@@ -56,10 +56,10 @@
       <div class="popup__content">
         <img src="./images/close.svg" alt="" class="popup__close">
         <h3 class="popup__title">Редактировать профиль</h3>
-        <form class="popup__form" name="edit" novalidate>
-          <input id="name-edit" type="text" name="nameEdit" class="popup__input popup__input_type_name" minlength="2" required placeholder="Имя">
+        <form class="popup__form form-profile" name="edit" novalidate>
+          <input id="name-edit" type="text" name="nameEdit" class="popup__input popup__input_type_name" minlength="2" maxlength="30" required placeholder="Имя">
           <span id="name-edit-error" class="error"></span>
-          <input id="job-edit" type="text" name="jobEdit" class="popup__input popup__input_type_link-url" minlength="2" required placeholder="О себе">
+          <input id="job-edit" type="text" name="jobEdit" class="popup__input popup__input_type_link-url" minlength="2" maxlength="30" required placeholder="О себе">
           <span id="job-edit-error" class="error"></span>
           <button type="submit" class="button popup__button popup__button_edit popup__button_valid">Сохранить</button>
         </form>

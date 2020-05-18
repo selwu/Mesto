@@ -12,8 +12,10 @@ const buttonCloserProfile = profilePopup.querySelector('.popup__close');
 const buttonCloserImage = imagePopup.querySelector('.popup__close');
 const userInfoName = document.querySelector('.user-info__name');
 const userInfoJob = document.querySelector('.user-info__job');
-const cardForm = document.forms.new;
-const editForm = document.forms.edit;
+/* + REVIEW. Можно лучше. В стилевых правилах написания js-кода требуется, чтобы поиск DOM-элементов во всём проекте
+осуществлялся одним способом, например только с помощью querySelector */
+const cardForm = document.querySelector('.form-card');
+const editForm = document.querySelector('.form-profile');
 
 
 function createCard(link, name) {
@@ -48,6 +50,10 @@ function createCard(link, name) {
   return cardContainer;
 }
 
+/*REVIEW. Отлично, что функция createCard отвечает только за создание элемента карточки, а добавление карточки к общему списку
+ происходит в другой функции. Этим соблюдён принцип единственной ответственности функции createCard и её можно переиспользовать
+ в других проектах.
+  */
 function addToCardContainer(link, name) {
   container.appendChild(createCard(link, name));
 }
@@ -61,54 +67,6 @@ function toInitialCards() {
 function likeHandler(event) {
   if (event.target.classList.contains('place-card__like-icon')) {
     event.target.classList.toggle('place-card__like-icon_liked');
-  }
-}
-
-function popupToggleHandler(popup) {
-  return () => {
-    popup.classList.toggle('popup_is-opened');
-  };
-}
-
-
-function addNewCard(event) {
-  event.preventDefault();
-
-  const name = cardForm.elements.name.value;
-  const link = cardForm.elements.link.value;
-
-  addToCardContainer(link, name);
-  popupToggleHandler(cardPopup)();
-}
-
-function removeHandler(event) {
-  if (event.target.classList.contains('place-card__delete-icon')) {
-    const parent = event.target.closest('.place-card');
-    container.removeChild(parent);
-  }
-}
-
-function originNamesHandler() {
-  editForm.elements.nameEdit.value = userInfoName.textContent;
-  editForm.elements.jobEdit.value = userInfoJob.textContent;
-}
-
-function submitFormEdit(event) {
-  event.preventDefault();
-
-  userInfoName.textContent = editForm.elements.nameEdit.value;
-  userInfoJob.textContent = editForm.elements.jobEdit.value;
-
-  popupToggleHandler(profilePopup)();
-}
-
-function openerHandler(event) {
-  const cardPlaceName = document.querySelector('.place-card__name');
-
-  if (event.target.classList.contains('place-card__image')) {
-    imagePopupBig.src = event.target.dataset.url;
-    imagePopupBig.alt = cardPlaceName.textContent;
-    imagePopup.classList.toggle('popup_is-opened');
   }
 }
 
@@ -133,12 +91,51 @@ function isValidate(input) {
   return input.checkValidity();
 }
 
-
 function isFieldValid(input) {
   const errorElem = input.parentNode.querySelector(`#${input.id}-error`);
   const valid = isValidate(input);
   errorElem.textContent = input.validationMessage;
   return valid;
+}
+
+function isFormValid(form) {
+  const inputs = [...form.elements];
+  let valid = true;
+
+  inputs.forEach((input) => {
+    if (input.type !== 'submit') {
+      if (!isFieldValid(input)) valid = false;
+    }
+  });
+  return valid;
+}
+
+function popupToggleHandler(popup) {
+  return () => {
+    popup.classList.toggle('popup_is-opened');
+  };
+}
+
+function addNewCard(event) {
+  event.preventDefault();
+
+  const name = cardForm.elements.name.value;
+  const link = cardForm.elements.link.value;
+
+  addToCardContainer(link, name);
+  popupToggleHandler(cardPopup)();
+  event.target.reset();
+}
+
+/* + REVIEW. Надо лучше. Надо избавиться от глобальной переменной container в функции removeHandler, сделать эту функцию независимой от текущей размётки.
+Это будет обязательным требованием в 8-м задании. */
+
+function removeHandler(event) {
+  if (event.target.classList.contains('place-card__delete-icon')) {
+    const parentChild = document.querySelector('.places-list');
+    const parent = event.target.closest('.place-card');
+    parentChild.removeChild(parent);
+  }
 }
 
 function setSubmitButtonState(button, state) {
@@ -148,6 +145,33 @@ function setSubmitButtonState(button, state) {
   } else {
     button.setAttribute('disabled', 'true');
     button.classList.remove('popup__button_valid');
+  }
+}
+
+function originNamesHandler() {
+  editForm.elements.nameEdit.value = userInfoName.textContent;
+  editForm.elements.jobEdit.value = userInfoJob.textContent;
+  const form = document.querySelector('.form-profile');
+  const submit = document.querySelector('.popup__button_edit');
+  setSubmitButtonState(submit, isFormValid(form));
+}
+
+function submitFormEdit(event) {
+  event.preventDefault();
+
+  userInfoName.textContent = editForm.elements.nameEdit.value;
+  userInfoJob.textContent = editForm.elements.jobEdit.value;
+
+  popupToggleHandler(profilePopup)();
+}
+
+function openerHandler(event) {
+  const cardPlaceName = document.querySelector('.place-card__name');
+
+  if (event.target.classList.contains('place-card__image')) {
+    imagePopupBig.src = event.target.dataset.url;
+    imagePopupBig.alt = cardPlaceName.textContent;
+    imagePopup.classList.toggle('popup_is-opened');
   }
 }
 
@@ -164,45 +188,67 @@ function handlerInputForm(event) {
   }
 }
 
-function isFormValid(form) {
-  const inputs = Array.from(form.elements);
-  let valid = true;
-
-  inputs.forEach((input) => {
-    if (input.type !== 'submit') {
-      if (!isFieldValid(input)) valid = false;
-    }
-  });
-  return valid;
+function resetHandler(form) {
+  return () => {
+    form.reset();
+  };
 }
 
-function sendForm(event) {
-  event.preventDefault();
-  const currentForm = event.target;
-  const isValid = isFormValid(currentForm);
-
-  if (isValid) {
-    console.log('Ok!');
-    event.target.reset();
-  } else {
-    console.log('Not ok!');
-  }
-}
+/* + REVIEW. Можно лучше. Вы проверяете валидность формы при событиях 'input', и, если функции проверки на валидность работают корректно,
+  сабмит формы только и может прроизойти, когда форма валидна. Поэтому проверка формы на валидность при сабмите в этом задании неуместна,
+  и функция sendForm не нужна.
+  */
 
 container.addEventListener('click', likeHandler);
 container.addEventListener('click', openerHandler);
 buttonOpenerNewCard.addEventListener('click', popupToggleHandler(cardPopup));
 buttonCloserCard.addEventListener('click', popupToggleHandler(cardPopup));
-buttonOpenerEditProfile.addEventListener('click', popupToggleHandler(profilePopup));
+buttonCloserCard.addEventListener('click', resetHandler(cardForm));
 buttonOpenerEditProfile.addEventListener('click', originNamesHandler);
+buttonOpenerEditProfile.addEventListener('click', popupToggleHandler(profilePopup));
 buttonCloserProfile.addEventListener('click', popupToggleHandler(profilePopup));
 buttonCloserImage.addEventListener('click', popupToggleHandler(imagePopup));
 cardForm.addEventListener('submit', addNewCard);
-cardForm.addEventListener('submit', sendForm);
 cardForm.addEventListener('input', handlerInputForm, true);
 editForm.addEventListener('submit', submitFormEdit);
-editForm.addEventListener('submit', sendForm);
 editForm.addEventListener('input', handlerInputForm, true);
 container.addEventListener('click', removeHandler);
 
 toInitialCards();
+
+
+
+/*REVIEW. Резюме.
+
+Неплохая работа, но не выполнены некоторые обязательные  требования задания 7.
+
+Функционал карточек, требуемый по заданию, работает.
+Используется синтаксис ES6.
+Соблюдён принцип единственной ответственности функции createCard.
+
+Что можно улучшить.
++1. Поиск DOM-элементов во всём проекте нужно осуществлять одним способом, например, только с помощью querySelector
+(подробный комментарий в начале кода скрипта).
+
++2. Надо избавиться от глобальной переменной container в функции removeHandler (подробный комментарий в коде removeHandler).
+
++3. Проверка формы на валидность при сабмите в этом задании неуместна, и функция sendForm не нужна.
+
+
+
+Не выполнено обязательное требование задания 7 - перенос информации о профиле из элементов страницы,
+хранящих эту информацию, в поля формы профиля.
+
+Что нужно исправить.
+
++1. При валидации формы профиля не выполняется требование проверять не больше ли 30-ти символов введено в поле ввода формы.
+Надо это исправить - проверять выполнение требования "Должно быть от 2 до 30 символов" в полном объёме.
+
+
++2. При открытия формы профиля на ней находится информации о профиле со страницы, которая перенесена в поля формы, поэтому на ней при открыти
+всегда находится валидная информация. Поэтому в слушателе открытия этой формы надо обязательно производить удаление сообщений об ошибках,
+которые могут остаться от предыдущего неправильного ввода и выхода из формы по крестику, делать кнопку сабмита активной и черного цвета.
+Эти действия можно будет сделать с помощью вызовов функции валидации формы в слушателе её открытия. Всё это будет проверяться при следующей проверке.
+Протестируйте сами работу формы профиля во всех случаях после внесения изменений.
+
+*/
