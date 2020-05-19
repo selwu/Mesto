@@ -12,8 +12,6 @@ const buttonCloserProfile = profilePopup.querySelector('.popup__close');
 const buttonCloserImage = imagePopup.querySelector('.popup__close');
 const userInfoName = document.querySelector('.user-info__name');
 const userInfoJob = document.querySelector('.user-info__job');
-/* + REVIEW. Можно лучше. В стилевых правилах написания js-кода требуется, чтобы поиск DOM-элементов во всём проекте
-осуществлялся одним способом, например только с помощью querySelector */
 const cardForm = document.querySelector('.form-card');
 const editForm = document.querySelector('.form-profile');
 
@@ -116,19 +114,33 @@ function popupToggleHandler(popup) {
   };
 }
 
+function resetForm(form) {
+  return () => {
+    const button = form.querySelector('.button');
+    const spans = form.querySelectorAll('span');
+
+    button.setAttribute('disabled', 'true');
+    button.classList.remove('popup__button_valid');
+    spans.forEach((item) => {
+      const span = item;
+      span.textContent = '';
+    });
+
+    form.reset();
+  };
+}
+
 function addNewCard(event) {
   event.preventDefault();
 
   const name = cardForm.elements.name.value;
   const link = cardForm.elements.link.value;
 
+
   addToCardContainer(link, name);
   popupToggleHandler(cardPopup)();
-  event.target.reset();
+  resetForm(event.target)();
 }
-
-/* + REVIEW. Надо лучше. Надо избавиться от глобальной переменной container в функции removeHandler, сделать эту функцию независимой от текущей размётки.
-Это будет обязательным требованием в 8-м задании. */
 
 function removeHandler(event) {
   if (event.target.classList.contains('place-card__delete-icon')) {
@@ -188,27 +200,12 @@ function handlerInputForm(event) {
   }
 }
 
-function resetHandler(form) {
-  return () => {
-    form.reset();
-    const spans = form.querySelectorAll('span');
-    spans.forEach((item) => {
-      const span = item;
-      span.textContent = '';
-    });
-  };
-}
-
-/* + REVIEW. Можно лучше. Вы проверяете валидность формы при событиях 'input', и, если функции проверки на валидность работают корректно,
-  сабмит формы только и может прроизойти, когда форма валидна. Поэтому проверка формы на валидность при сабмите в этом задании неуместна,
-  и функция sendForm не нужна.
-  */
 
 container.addEventListener('click', likeHandler);
 container.addEventListener('click', openerHandler);
 buttonOpenerNewCard.addEventListener('click', popupToggleHandler(cardPopup));
 buttonCloserCard.addEventListener('click', popupToggleHandler(cardPopup));
-buttonCloserCard.addEventListener('click', resetHandler(cardForm));
+buttonCloserCard.addEventListener('click', resetForm(cardForm));
 buttonOpenerEditProfile.addEventListener('click', originNamesHandler);
 buttonOpenerEditProfile.addEventListener('click', popupToggleHandler(profilePopup));
 buttonCloserProfile.addEventListener('click', popupToggleHandler(profilePopup));
@@ -255,5 +252,17 @@ toInitialCards();
 которые могут остаться от предыдущего неправильного ввода и выхода из формы по крестику, делать кнопку сабмита активной и черного цвета.
 Эти действия можно будет сделать с помощью вызовов функции валидации формы в слушателе её открытия. Всё это будет проверяться при следующей проверке.
 Протестируйте сами работу формы профиля во всех случаях после внесения изменений.
+
+
+___________________________________________________________________________________________________________________________________________
+
+REVIEW2. Резюме2.
+
+Что надо исправить.
+
+1. Хотела уже принять Вашу работу, но тут обнаружила, что кнопка сабмита активна при повторном входе в форму карточки после сабмита в
+предыдущем сеансе работы с формой. Такого быть не должно, так как при открытии в полях формы карточки нет никакой информации.
+Поэтому в слушателе открытия формы карточки нужно деактивировать кнопку сабмита этой формы. Сделайте это.
+
 
 */
