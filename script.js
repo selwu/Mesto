@@ -16,57 +16,57 @@ const cardForm = document.querySelector('.form-card');
 const editForm = document.querySelector('.form-profile');
 
 
-function createCard(link, name) {
-  const cardContainer = document.createElement('div');
-  cardContainer.classList.add('place-card');
+// function createCard(link, name) {
+//   const cardContainer = document.createElement('div');
+//   cardContainer.classList.add('place-card');
 
-  const cardImage = document.createElement('div');
-  cardImage.classList.add('place-card__image');
-  cardImage.setAttribute('style', `background-image: url(${link})`);
-  cardImage.setAttribute('data-url', link);
+//   const cardImage = document.createElement('div');
+//   cardImage.classList.add('place-card__image');
+//   cardImage.setAttribute('style', `background-image: url(${link})`);
+//   cardImage.setAttribute('data-url', link);
 
-  const buttonDelete = document.createElement('button');
-  buttonDelete.classList.add('place-card__delete-icon');
+//   const buttonDelete = document.createElement('button');
+//   buttonDelete.classList.add('place-card__delete-icon');
 
-  const cardDescription = document.createElement('div');
-  cardDescription.classList.add('place-card__description');
+//   const cardDescription = document.createElement('div');
+//   cardDescription.classList.add('place-card__description');
 
-  const cardName = document.createElement('h3');
-  cardName.classList.add('place-card__name');
-  cardName.textContent = name;
+//   const cardName = document.createElement('h3');
+//   cardName.classList.add('place-card__name');
+//   cardName.textContent = name;
 
-  const buttonLike = document.createElement('button');
-  buttonLike.classList.add('place-card__like-icon');
+//   const buttonLike = document.createElement('button');
+//   buttonLike.classList.add('place-card__like-icon');
 
 
-  cardContainer.appendChild(cardImage);
-  cardContainer.appendChild(cardDescription);
-  cardImage.appendChild(buttonDelete);
-  cardDescription.appendChild(cardName);
-  cardDescription.appendChild(buttonLike);
+//   cardContainer.appendChild(cardImage);
+//   cardContainer.appendChild(cardDescription);
+//   cardImage.appendChild(buttonDelete);
+//   cardDescription.appendChild(cardName);
+//   cardDescription.appendChild(buttonLike);
 
-  return cardContainer;
-}
+//   return cardContainer;
+// }
 
 /*REVIEW. Отлично, что функция createCard отвечает только за создание элемента карточки, а добавление карточки к общему списку
  происходит в другой функции. Этим соблюдён принцип единственной ответственности функции createCard и её можно переиспользовать
  в других проектах.
   */
-function addToCardContainer(link, name) {
-  container.appendChild(createCard(link, name));
-}
+// function addToCardContainer(link, name) {
+//   container.appendChild(createCard(link, name));
+// }
 
-function toInitialCards() {
-  initialCards.forEach((item) => {
-    addToCardContainer(item.link, item.name);
-  });
-}
+// function toInitialCards() {
+//   initialCards.forEach((item) => {
+//     addToCardContainer(item.link, item.name);
+//   });
+// }
 
-function likeHandler(event) {
-  if (event.target.classList.contains('place-card__like-icon')) {
-    event.target.classList.toggle('place-card__like-icon_liked');
-  }
-}
+// function likeHandler(event) {
+//   if (event.target.classList.contains('place-card__like-icon')) {
+//     event.target.classList.toggle('place-card__like-icon_liked');
+//   }
+// }
 
 function isValidate(input) {
   input.setCustomValidity('');
@@ -142,13 +142,13 @@ function addNewCard(event) {
   resetForm(event.target)();
 }
 
-function removeHandler(event) {
-  if (event.target.classList.contains('place-card__delete-icon')) {
-    const parentChild = document.querySelector('.places-list');
-    const parent = event.target.closest('.place-card');
-    parentChild.removeChild(parent);
-  }
-}
+// function removeHandler(event) {
+//   if (event.target.classList.contains('place-card__delete-icon')) {
+//     const parentChild = document.querySelector('.places-list');
+//     const parent = event.target.closest('.place-card');
+//     parentChild.removeChild(parent);
+//   }
+// }
 
 function setSubmitButtonState(button, state) {
   if (state) {
@@ -201,7 +201,7 @@ function handlerInputForm(event) {
 }
 
 
-container.addEventListener('click', likeHandler);
+// container.addEventListener('click', likeHandler);
 container.addEventListener('click', openerHandler);
 buttonOpenerNewCard.addEventListener('click', popupToggleHandler(cardPopup));
 buttonCloserCard.addEventListener('click', popupToggleHandler(cardPopup));
@@ -214,9 +214,9 @@ cardForm.addEventListener('submit', addNewCard);
 cardForm.addEventListener('input', handlerInputForm, true);
 editForm.addEventListener('submit', submitFormEdit);
 editForm.addEventListener('input', handlerInputForm, true);
-container.addEventListener('click', removeHandler);
+// container.addEventListener('click', removeHandler);
 
-toInitialCards();
+// toInitialCards();
 
 
 
