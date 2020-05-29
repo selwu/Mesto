@@ -1,5 +1,5 @@
 class CardList {
-  constructor(container, cards = []) {
+  constructor(container, cards) {
     this.container = container;
     this.cards = cards;
   }
@@ -10,8 +10,10 @@ class CardList {
   }
 
   render() {
-    initialCards.forEach((item) => {
-      this.addCard(this.create(item.link, item.name));
+    this.cards.forEach(element => {
+      const card = new Card(element.link, element.name);
+      this.addCard(card.create());
+      card.setEventListeners();
     });
   }
 }

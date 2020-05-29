@@ -42,14 +42,15 @@ class Card {
     event.target.classList.toggle('place-card__like-icon_liked');
   }
 
-  setEventListener() {
-    this.cardElement.querySelector('.place-card__like-icon').addEventListener('click', this.like);
-  }
-
   remove(event) {
     const parentChild = document.querySelector('.places-list');
     const parent = event.target.closest('.place-card');
     parentChild.removeChild(parent);
+  }
+
+  setEventListeners() {
+    this.cardElement.querySelector('.place-card__like-icon').addEventListener('click', this.like);
+    this.cardElement.querySelector('.place-card__delete-icon').addEventListener('click', this.remove);
   }
 
 }

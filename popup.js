@@ -1,5 +1,16 @@
 class Popup {
-  constructor() {
+  // constructor() {
 
+  // }
+
+  open() {
+
+  }
+
+  close() {
+
+  }
+
+  setEventListeners() {
   }
 }
