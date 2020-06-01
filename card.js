@@ -12,6 +12,7 @@ class Card {
     cardImage.classList.add('place-card__image');
     cardImage.setAttribute('style', `background-image: url(${this.link})`);
     cardImage.setAttribute('data-url', this.link);
+    cardImage.setAttribute('data-name', this.name);
 
     const buttonDelete = document.createElement('button');
     buttonDelete.classList.add('place-card__delete-icon');
@@ -34,6 +35,7 @@ class Card {
     cardDescription.appendChild(buttonLike);
 
     this.cardElement = cardContainer;
+    this.setEventListeners();
 
     return cardContainer;
   }

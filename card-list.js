@@ -1,19 +1,18 @@
 class CardList {
-  constructor(container, cards) {
+  constructor(container, cards, createCard) {
     this.container = container;
     this.cards = cards;
+    this.createCard = createCard;
   }
 
-  addCard(cardElement) {
-    this.cards.push(cardElement);
-    this.container.appendChild(cardElement);
+  addCard = (cardItem) => {
+    this.container.append(cardItem);
   }
 
   render() {
-    this.cards.forEach(element => {
-      const card = new Card(element.link, element.name);
-      this.addCard(card.create());
-      card.setEventListeners();
+    this.cards.forEach((element) => {
+      const card = this.createCard(element.link, element.name);
+      this.addCard(card);
     });
   }
 }

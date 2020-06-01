@@ -1,16 +1,13 @@
 class Popup {
-  // constructor() {
-
-  // }
-
-  open() {
-
+  constructor(container) {
+    this.container = container;
   }
 
   close() {
-
+    this.container.classList.remove('popup_is-opened');
   }
 
-  setEventListeners() {
+  open() {
+    this.container.classList.add('popup_is-opened');
   }
 }
