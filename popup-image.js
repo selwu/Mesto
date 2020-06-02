@@ -3,8 +3,8 @@ class PopupImage {
     this.container = container;
   }
 
-  open(event) {
-    const imagePopupBig = document.querySelector('.popup__image');
+  open(event, image) {
+    const imagePopupBig = image;
     if (event.target.classList.contains('place-card__image')) {
       imagePopupBig.src = event.target.dataset.url;
       imagePopupBig.alt = event.target.dataset.name;
