@@ -6,14 +6,11 @@ class PopupCard extends Popup {
   }
 
 
-  submit(event) {
-    event.preventDefault();
-
-    const name = event.target.elements.name.value;
-    const link = event.target.elements.link.value;
+  submit(form) {
+    const name = form.elements.name.value;
+    const link = form.elements.link.value;
 
     this.addCard(this.createCard(link, name));
-    this.resetForm(event.target);
   }
 
   resetForm(form) {

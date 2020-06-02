@@ -36,23 +36,27 @@ class Card {
 
     this.cardElement = cardContainer;
     this.setEventListeners();
-
     return cardContainer;
   }
 
-  like(event) {
-    event.target.classList.toggle('place-card__like-icon_liked');
+  like = () => {
+    const  button = this.cardElement.querySelector('.place-card__like-icon');
+    button.classList.toggle('place-card__like-icon_liked');
   }
 
-  remove(event) {
-    const parentChild = document.querySelector('.places-list');
-    const parent = event.target.closest('.place-card');
-    parentChild.removeChild(parent);
+  remove = () => {
+    this.cardElement.remove();
+    this.deleteEventListeners();
   }
 
   setEventListeners() {
     this.cardElement.querySelector('.place-card__like-icon').addEventListener('click', this.like);
     this.cardElement.querySelector('.place-card__delete-icon').addEventListener('click', this.remove);
+  }
+
+  deleteEventListeners() {
+    this.cardElement.querySelector('.place-card__like-icon').removeEventListener('click', this.like);
+    this.cardElement.querySelector('.place-card__delete-icon').removeEventListener('click', this.remove);
   }
 
 }
