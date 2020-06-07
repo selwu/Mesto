@@ -1,27 +1,35 @@
 
 class FormValidator {
-  constructor(form) {
+  constructor(form, errorMessages) {
     this.form = form;
+    this.errorMessages = errorMessages;
   }
-
-
-
 
   isValidate = (input) => {
     input.setCustomValidity('');
 
     if (input.validity.valueMissing) {
-      input.setCustomValidity('Это обязательное поле');
+      // + Можно лучше
+      // Текст ошибок лучше представить в виде объекта вида:
+      // const errorMessages = {
+      // valueMissing: 'Это обязательное поле',
+      // tooShort: 'Должно быть от 2 до 30 символов',
+      // typeMismatch: 'Здесь должна быть ссылка'
+      // };
+      // Объект передаем в метод валидации и текст берем уже по ключу объекта
+      // Что это дает? Так мы отвязываемся от локали, можно объект на любом
+      // языке скинуть, таким образом можно легко осуществить локализацию.
+      input.setCustomValidity(this.errorMessages.valueMissing);
       return false;
     }
 
     if (input.validity.tooShort) {
-      input.setCustomValidity('Должно быть от 2 до 30 символов');
+      input.setCustomValidity(this.errorMessages.tooShort);
       return false;
     }
 
     if (input.validity.typeMismatch && input.type === 'url') {
-      input.setCustomValidity('Здесь должна быть ссылка');
+      input.setCustomValidity(this.errorMessages.typeMismatch);
       return false;
     }
 
@@ -29,9 +37,11 @@ class FormValidator {
   }
 
   isFieldValid = (input) => {
-    const errorElem = input.parentNode.querySelector(`#${input.id}-error`);
+    // + Надо исправить
+    // .parentNode -- хардкод, ищите в форме, она же сохранится в классе
+    this.errorElem = this.form.querySelector(`#${input.id}-error`);
     const valid = this.isValidate(input);
-    errorElem.textContent = input.validationMessage;
+    this.errorElem.textContent = input.validationMessage;
     return valid;
   }
 
@@ -46,7 +56,7 @@ class FormValidator {
     });
     return valid;
   }
-
+  // Кнопку не надо будет передавать, она одна и должна быть сохранена в переменной класса
   setSubmitButtonState = (button, state) => {
     if (state) {
       button.removeAttribute('disabled');
@@ -58,11 +68,15 @@ class FormValidator {
   }
 
   handlerInputForm = (event) => {
+    // Кнопка и массивы должны быть найдены 1 раз и сохранены в переменных
     const submit = event.currentTarget.querySelector('.button');
     const [...inputs] = event.currentTarget.elements;
 
     this.isFieldValid(event.target);
-
+    // Можно обойтись без перебора
+    // На форме выполняете метод this.someForm.checkValidity()
+    // он вернет treu/false если форма валидна/невалидна
+    // Это метод проверяет форму целиком
     if (inputs.every(this.isValidate)) {
       this.setSubmitButtonState(submit, true);
     } else {
@@ -76,3 +90,8 @@ class FormValidator {
   }
 
 }
+
+// Заведите метод класса init() в котором вы собираете 1 раз массив
+// инпутов, массив подстрочников с ошибками, кнопку и все что еще нужно.
+// Сохраните это в переменных класса, чтобы не искать заново. Из этого же
+// метода вызывайте setEventListeners
