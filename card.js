@@ -44,13 +44,11 @@ class Card {
   }
 
   like = () => {
-    // Этот элемент уже должен быть найден
     this.buttonLike.classList.toggle('place-card__like-icon_liked');
   }
 
   remove = () => {
-    // Надо исправить
-    // + Следует сначала удалить слушатели
+
     this.deleteEventListeners();
     this.cardElement.remove();
   }
@@ -60,24 +58,6 @@ class Card {
   }
 
   setEventListeners() {
-    // + Элементы корзинки, середчка, картинки следует найти и сохранить в переменных класса
-    // чтобы потом обратиться к ним при удалении слушателей
-    // Надо исправить
-    // Также логично чтобы класс карточки обрабатывал клик по картинке внутри карточки
-    // (да и по заданию мы не используем делегирование для карт). Для этого добавьте
-    // в класс обработчки клика по картинке, который будет вызывать коллбэк для зума карточки
-    // и передавать туда URL
-    // Коллбэк для зума следует передать в конструктор
-    // Пример:
-    // class Card {
-    //   constructor(name, link, openImageCallback) {
-    //       ......
-    //     this.openImageCallback = openImageCallback;
-    //   }
-    //   openImg() {
-    //     this.openImageCallback(this.link);
-    //   }
-    // }
     this.buttonLike.addEventListener('click', this.like);
     this.buttonDelete.addEventListener('click', this.remove);
     this.cardImage.addEventListener('click', this.zoom);

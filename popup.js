@@ -1,6 +1,8 @@
 class Popup {
   constructor(container) {
     this.container = container;
+    // + Эту строчку перенесите в setListeners
+    this.setEventListener();
   }
 
   close() {
@@ -10,8 +12,10 @@ class Popup {
   open() {
     this.container.classList.add('popup_is-opened');
   }
+
+  setEventListener() {
+    this.closeButton = this.container.querySelector('.popup__close');
+    this.closeButton.addEventListener('click', () => this.close());
+  }
 }
 
-// Надо исправить
-// Попап должен уметь себя закрывать по "крестику"
-// Передайте в конструктор или селектор элемента для клика на закрытие или сам элемент

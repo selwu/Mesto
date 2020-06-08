@@ -11,7 +11,6 @@
   const profilePopup = document.querySelector('.profile-popup');
   const cardForm = document.querySelector('.form-card');
   const profileForm = document.querySelector('.form-profile');
-  const buttonProfile = document.querySelector('.popup__button_edit');
   const userInfoJob = document.querySelector('.user-info__job');
   const userInfoName = document.querySelector('.user-info__name');
   const inputName = document.querySelector('#name-edit');
@@ -21,17 +20,24 @@
   const buttonCloserProfile = document.querySelector('.popup__close-profile');
   const buttonOpenerNewCard = document.querySelector('.user-info__button');
   const buttonCloserCard = document.querySelector('.popup__close-card');
-  const popupImage = new PopupImage(document.querySelector('.image-popup'));
+  const imageBig = document.querySelector('.popup__image');
+  const popupImage = new PopupImage(document.querySelector('.image-popup'), imageBig);
+  const profileFormValidator = new FormValidator(profileForm, errorMessages);
+  const cardFormValidator = new FormValidator(cardForm, errorMessages);
   const openImageCallback = (link, name) => {
     popupImage.open(link, name);
   };
+  const setSubmitButtonStateCard = (state) => {
+    cardFormValidator.setSubmitButtonState(state);
+  };
   const createCard = (link, name) => new Card(link, name, openImageCallback).create();
   const cardList = new CardList(container, initialCards, createCard);
-  const popupCard = new PopupCard(document.querySelector('.card-popup'), createCard, cardList.addCard);
-  const popupProfile = new PopupProfile(document.querySelector('.profile-popup'));
-  const userInfo = new UserInfo(userInfoName, userInfoJob, inputName, inputJob);
-  const profileFormValidator = new FormValidator(profileForm, errorMessages);
-  const cardFormValidator = new FormValidator(cardForm, errorMessages);
+  const addNewCard = (cardItem) => {
+    cardList.addCard(cardItem);
+  };
+  const popupCard = new PopupCard({ cardPopup, setSubmitButtonStateCard, createCard, addNewCard });
+  const popupProfile = new Popup(profilePopup);
+  const userInfo = new UserInfo(userInfoName, userInfoJob);
 
 
   buttonCloserImage.addEventListener('click', (event) => {
@@ -43,44 +49,54 @@
   });
 
   buttonCloserCard.addEventListener('click', () => {
-    popupCard.close();
-    popupCard.resetForm(cardForm);
+    cardFormValidator.resetForm();0
   });
 
   cardPopup.addEventListener('submit', (event) => {
     event.preventDefault();
     popupCard.submit(event.target);
-    popupCard.resetForm(event.target);
+    cardFormValidator.resetForm();
     popupCard.close();
   });
 
 
   buttonOpenerProfile.addEventListener('click', () => {
+    const getUserInfo = userInfo.getUserInfo();
+    inputName.value = getUserInfo.name;
+    inputJob.value = getUserInfo.job;
     popupProfile.open();
   });
 
-  buttonOpenerProfile.addEventListener('click', () => {
-    userInfo.setUserInfo(userInfoName.textContent, userInfoJob.textContent);
-    profileFormValidator.isFormValid(profileForm);
-    buttonProfile.removeAttribute('disabled');
-    buttonProfile.classList.add('popup__button_valid');
-  });
-
   buttonCloserProfile.addEventListener('click', () => {
-    popupProfile.close();
+    profileFormValidator.resetForm();
   });
 
   profilePopup.addEventListener('submit', (event) => {
     event.preventDefault();
-    userInfo.updateUserInfo(inputName.value, inputJob.value);
+    userInfo.setUserInfo(inputName.value, inputJob.value);
+    userInfo.updateUserInfo();
     popupProfile.close();
   });
 
 
   cardList.render();
-  cardFormValidator.setEventListeners();
-  profileFormValidator.setEventListeners();
-
-  // Добрый день!
-  // Хорошая работа, есть замечания, но вы справитесь без особых проблем.
+  userInfo.setUserInfo(userInfoName.textContent, userInfoJob.textContent);
 })();
+
+// Добрый день!
+
+// Хорошо поработали, но еще остались замечания.
+
+// ## Можно лучше
+
+// Большое количество параметров лучше передвать в метод или в конструктор через деструктуризацию.
+
+// Например в коде:
+// ~~~
+// const newClass = new Class({ windowOne, userForm, popupObj })
+// ~~~
+// А внутри класса:
+// ~~~
+// constructor ({ userForm, popupObj, windowOne }) {...}
+// ~~~
+// И тогда порядок переменных будет неважен, это удобно

@@ -18,8 +18,8 @@
       <div class="user-info">
         <div class="user-info__photo"></div>
         <div class="user-info__data">
-          <h1 class="user-info__name">Jaques Causteau</h1>
-          <p class="user-info__job">Sailor, Researcher</p>
+          <h1 class="user-info__name"></h1>
+          <p class="user-info__job"></p>
           <button class="user-info__edit">Edit</button>
         </div>
         <button class="button user-info__button">+</button>
@@ -47,7 +47,7 @@
           <span id="name-card-error" class="error"></span>
           <input id="url-card" type="url" name="link" class="popup__input popup__input_type_link-url" required placeholder="Ссылка на картинку">
           <span id="url-card-error" class="error"></span>
-          <button type="submit" class="button popup__button popup__button_card" disabled>+</button>
+          <button type="submit" class="button popup__button popup__button_card" >+</button>
         </form>
       </div>
     </div>
@@ -61,7 +61,7 @@
           <span id="name-edit-error" class="error"></span>
           <input id="job-edit" type="text" name="jobEdit" class="popup__input popup__input_type_link-url" minlength="2" maxlength="30" required placeholder="О себе">
           <span id="job-edit-error" class="error"></span>
-          <button type="submit" class="button popup__button popup__button_edit popup__button_valid">Сохранить</button>
+          <button type="submit" class="button popup__button popup__button_edit" disabled>Сохранить</button>
         </form>
       </div>
     </div>
@@ -79,7 +79,6 @@
   <script src="card-list.js"></script>
   <script src="popup.js"></script>
   <script src="popup-card.js"></script>
-  <script src="popup-profile.js"></script>
   <script src="popup-image.js"></script>
   <script src="user-info.js"></script>
   <script src="form-validator.js"></script>

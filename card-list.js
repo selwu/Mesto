@@ -6,12 +6,14 @@ class CardList {
   }
 
   addCard = (cardItem) => {
-    this.container.append(cardItem);
+    const card = this.createCard(cardItem.link, cardItem.name);
+    this.container.append(card);
   }
 
   render() {
-    this.cards.forEach((element) => {
-      const card = this.createCard(element.link, element.name);
+    this.cards.forEach((card) => {
+      // + Вам не кажетя что логичнее addCard заставить вызывать коллбэк? Ведь жто удобнее
+      // через addCard можно создавать как много (в цикле) так и одну карточку и в поле добавлять
       this.addCard(card);
     });
   }

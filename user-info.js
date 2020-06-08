@@ -1,23 +1,40 @@
 class UserInfo {
-  constructor(textName, textJob, inputName, inputJob) {
+  constructor(textName, textJob) {
     this.textName = textName;
     this.textJob = textJob;
-    this.inputName = inputName;
-    this.inputJob = inputJob;
+    this.name = '';
+    this.job = '';
   }
 
-  setUserInfo(name, job) {
-    // Этот класс про форму знать не должен
-    this.inputJob.value = job;
-    this.inputName.value = name;
+  setUserInfo = (setName, setJob) => {
+    this.name = setName;
+    this.job = setJob;
   }
 
-  updateUserInfo(name, job) {
-    this.textJob.textContent = job;
-    this.textName.textContent = name;
+  updateUserInfo = () => {
+    this.textJob.textContent = this.job;
+    this.textName.textContent = this.name;
   }
+
+  getUserInfo = () => {
+    return {
+      name: this.name,
+      job: this.job,
+    };
+  }
+
 }
-// Надо исправить
+
+
+// + Надо исправить -- не исправлено
+
+// Данные сейчас в классе не хранятся вы их храните вне класса -- в DOM
+// Инпуты к этому классу отношения не имеют тоже
+// Прочитайте задание из брифа
+//  setUserInfo -- устанавливает новые данные пользователя -- их туда в виде строк как аргументы передать надо
+// надо завести переменные для хранения этих данных. Еще раз перечитайте прошлую рекомендацию:
+
+
 // Класс должен на вход в конструктор получить элементы страницы, куда он будет подставлять актуальные данные
 // подьзователя (инпуты к ним не относятся).
 // Заведите метод setUserInfo который принимает строки с именем и профессией и сохраняет их внутри класса
