@@ -49,7 +49,7 @@
   });
 
   buttonCloserCard.addEventListener('click', () => {
-    cardFormValidator.resetForm();0
+    cardFormValidator.resetForm();
   });
 
   cardPopup.addEventListener('submit', (event) => {
@@ -80,23 +80,6 @@
 
 
   cardList.render();
-  userInfo.setUserInfo(userInfoName.textContent, userInfoJob.textContent);
+  userInfo.setUserInfo('Jaques Causteau', 'Sailor, Researcher');
+  userInfo.updateUserInfo();
 })();
-
-// Добрый день!
-
-// Хорошо поработали, но еще остались замечания.
-
-// ## Можно лучше
-
-// Большое количество параметров лучше передвать в метод или в конструктор через деструктуризацию.
-
-// Например в коде:
-// ~~~
-// const newClass = new Class({ windowOne, userForm, popupObj })
-// ~~~
-// А внутри класса:
-// ~~~
-// constructor ({ userForm, popupObj, windowOne }) {...}
-// ~~~
-// И тогда порядок переменных будет неважен, это удобно

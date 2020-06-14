@@ -1,8 +1,6 @@
 class PopupImage extends Popup {
   constructor(container, imageBig) {
     super(container)
-    // + Надо исправить
-    // Этот элемент уже готовый в конструктор передайте
     this.imageBig = imageBig;
   }
 
@@ -11,7 +9,4 @@ class PopupImage extends Popup {
     this.imageBig.alt = name;
     this.container.classList.add('popup_is-opened');
   }
-
-  // close вообще переопределять не надо
-  // Исправьте
 }

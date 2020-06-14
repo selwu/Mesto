@@ -79,8 +79,6 @@ class FormValidator {
 
   init = () => {
     this.button = this.form.querySelector('.button');
-    // + Надо исправить
-    // Инпуты соберите по селектору, ведь кроме них в форме может быть еге масса элементов
     this.inputs = this.form.querySelectorAll('input');
     this.spans = this.form.querySelectorAll('span');
     this.setEventListeners();

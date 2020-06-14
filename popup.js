@@ -1,7 +1,6 @@
 class Popup {
   constructor(container) {
     this.container = container;
-    // + Эту строчку перенесите в setListeners
     this.setEventListener();
   }
 
