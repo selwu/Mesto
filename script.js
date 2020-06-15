@@ -21,6 +21,15 @@
   const buttonOpenerNewCard = document.querySelector('.user-info__button');
   const buttonCloserCard = document.querySelector('.popup__close-card');
   const imageBig = document.querySelector('.popup__image');
+  const config = {
+    baseUrl: 'https://praktikum.tk/cohort11',
+    headers: {
+      authorization: '7d95c706-9e8f-4c57-8114-78c17868a168',
+      'Content-Type': 'application/json',
+    },
+  };
+  const api = new Api(config);
+  const initialCards = api.getInitialCards();
   const popupImage = new PopupImage(document.querySelector('.image-popup'), imageBig);
   const profileFormValidator = new FormValidator(profileForm, errorMessages);
   const cardFormValidator = new FormValidator(cardForm, errorMessages);
@@ -31,6 +40,7 @@
     cardFormValidator.setSubmitButtonState(state);
   };
   const createCard = (link, name) => new Card(link, name, openImageCallback).create();
+
   const cardList = new CardList(container, initialCards, createCard);
   const addNewCard = (cardItem) => {
     cardList.addCard(cardItem);
@@ -73,13 +83,25 @@
 
   profilePopup.addEventListener('submit', (event) => {
     event.preventDefault();
-    userInfo.setUserInfo(inputName.value, inputJob.value);
-    userInfo.updateUserInfo();
+    api.uploadUserInfo(inputName.value, inputJob.value)
+      .then((data) => {
+        userInfo.setUserInfo(data.name, data.about);
+        userInfo.updateUserInfo();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
     popupProfile.close();
   });
 
 
   cardList.render();
-  userInfo.setUserInfo('Jaques Causteau', 'Sailor, Researcher');
-  userInfo.updateUserInfo();
+  api.getUserInfo()
+    .then((user) => {
+      userInfo.setUserInfo(user.name, user.about);
+      userInfo.updateUserInfo();
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 })();
