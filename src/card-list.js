@@ -1,7 +1,6 @@
 class CardList {
-  constructor(container, initialCards, createCard) {
+  constructor(container, createCard) {
     this.container = container;
-    this.initialCards = initialCards;
     this.createCard = createCard;
   }
 
@@ -10,15 +9,10 @@ class CardList {
     this.container.append(card);
   }
 
-  render() {
+  render(cards) {
     this.initialCards
-      .then(cards => {
-        cards.slice(0, 10).forEach((card) => {
-          this.addCard(card);
-        })
+      cards.slice(0, 10).forEach((card) => {
+        this.addCard(card);
       })
-      .catch((err) => {
-        console.log(err);
-      });
   }
 }
