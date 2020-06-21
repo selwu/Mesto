@@ -13,7 +13,7 @@ class CardList {
   render() {
     this.initialCards
       .then(cards => {
-        cards.slice(0, 15).forEach((card) => {
+        cards.slice(0, 10).forEach((card) => {
           this.addCard(card);
         })
       })

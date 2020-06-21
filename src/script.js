@@ -29,6 +29,11 @@
     },
   };
   const api = new Api(config);
+  /**
+   * Можно лучше:
+   * Вызывать getInitialCards и в блоке then вызывать cardList.render(cards)
+   * Лучше, чтобы в классе CardList список карточек находился в виде массива, а не промиса.
+   */
   const initialCards = api.getInitialCards();
   const popupImage = new PopupImage(document.querySelector('.image-popup'), imageBig);
   const profileFormValidator = new FormValidator(profileForm, errorMessages);
@@ -105,3 +110,11 @@
       console.log(err);
     });
 })();
+
+/**
+ * Отличная работа: функционал работает без ошибок: информация обновляется только после ответа сервера.
+ * Работа с API выполнена верно - вся работа организована с помощью класса Api. Токен и адрес сервера передаются один
+ * раз в конструктор - код не дублируется. Ошибки сервера обрабатываются, блок catch расположен в верном месте.
+ *
+ * Можно лучше: все *.js файлы вынести в отдельную папку
+ */
