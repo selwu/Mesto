@@ -5,14 +5,13 @@ class CardList {
   }
 
   addCard = (cardItem) => {
-    const card = this.createCard(cardItem.link, cardItem.name);
+    const card = this.createCard(cardItem.link, cardItem.name, cardItem.likes.length);
     this.container.append(card);
   }
 
   render(cards) {
-    this.initialCards
-      cards.slice(0, 10).forEach((card) => {
-        this.addCard(card);
-      })
+      cards.slice(0, 4).forEach((card) => {
+          this.addCard(card);
+        })
   }
 }

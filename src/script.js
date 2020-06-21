@@ -38,13 +38,13 @@
   const setSubmitButtonStateCard = (state) => {
     cardFormValidator.setSubmitButtonState(state);
   };
-  const createCard = (link, name) => new Card(link, name, openImageCallback).create();
+  const createCard = (link, name, likes) => new Card(link, name, openImageCallback, likes).create();
 
   const cardList = new CardList(container, createCard);
   const addNewCard = (cardItem) => {
     cardList.addCard(cardItem);
   };
-  const popupCard = new PopupCard({ cardPopup, setSubmitButtonStateCard, createCard, addNewCard });
+  const popupCard = new PopupCard(cardPopup, setSubmitButtonStateCard, addNewCard);
   const popupProfile = new Popup(profilePopup);
   const userInfo = new UserInfo(userInfoName, userInfoJob);
 
@@ -63,6 +63,10 @@
 
   cardPopup.addEventListener('submit', (event) => {
     event.preventDefault();
+    api.toAddNewCard(event.target.elements.name.value, event.target.elements.link.value)
+      .catch((err) => {
+        console.log(err);
+      });
     popupCard.submit(event.target);
     cardFormValidator.resetForm();
     popupCard.close();

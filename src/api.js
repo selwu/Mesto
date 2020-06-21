@@ -44,4 +44,22 @@ class Api {
         return Promise.reject(`error${res.status}`);
       });
   }
+
+  toAddNewCard(cardName, cardLink) {
+    return fetch(`${this.baseUrl}/cards`, {
+      method: 'POST',
+      headers: this.headers,
+      body: JSON.stringify({
+        name: cardName,
+        link: cardLink,
+      }),
+    })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        }
+        return Promise.reject(`error${res.status}`);
+      });
+  }
+
 }

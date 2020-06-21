@@ -1,19 +1,19 @@
 class PopupCard extends Popup {
-  constructor(obj) {
-    super(obj.cardPopup);
-    this.createCard = obj.createCard;
-    this.addCard = obj.addNewCard;
-    this.setSubmitButtonState = obj.setSubmitButtonStateCard;
+  constructor(container, setSubmitButtonStateCard, addNewCard) {
+    super(container);
+    this.addCard = addNewCard;
+    this.setSubmitButtonState = setSubmitButtonStateCard;
     this.setSubmitButtonState(false);
+    this.card = {};
   }
 
 
   submit(form) {
-    const name = form.elements.name.value;
-    const link = form.elements.link.value;
+    this.card.name = form.elements.name.value;
+    this.card.link = form.elements.link.value;
+    this.card.likes = [];
 
-    this.addCard(this.createCard(link, name));
-    
+    this.addCard(this.card);
   }
 
 }

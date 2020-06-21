@@ -1,8 +1,9 @@
 class Card {
-  constructor(link, name, openImageCallback) {
+  constructor(link, name, openImageCallback, likes) {
     this.link = link;
     this.name = name;
     this.openImageCallback = openImageCallback;
+    this.likes = likes;
   }
 
   create() {
@@ -27,16 +28,26 @@ class Card {
     cardName.classList.add('place-card__name');
     cardName.textContent = this.name;
 
+    const cardWrapper = document.createElement('div');
+    cardWrapper.classList.add('place-card__wrapper');
+
     const buttonLike = document.createElement('button');
     this.buttonLike = buttonLike;
     buttonLike.classList.add('place-card__like-icon');
+
+    const likeCount = document.createElement('span');
+    likeCount.textContent = this.likes;
+    likeCount.classList.add('place-card__like-count');
+
 
 
     cardContainer.appendChild(cardImage);
     cardContainer.appendChild(cardDescription);
     cardImage.appendChild(buttonDelete);
     cardDescription.appendChild(cardName);
-    cardDescription.appendChild(buttonLike);
+    cardDescription.appendChild(cardWrapper);
+    cardWrapper.appendChild(buttonLike);
+    cardWrapper.appendChild(likeCount);
 
     this.cardElement = cardContainer;
     this.setEventListeners();
