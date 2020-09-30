@@ -10,7 +10,7 @@ class CardList {
   }
 
   render(cards) {
-      cards.slice(0, 4).forEach((card) => {
+      cards.forEach((card) => {
           this.addCard(card);
         })
   }
