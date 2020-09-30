@@ -22,7 +22,7 @@
   const buttonCloserCard = document.querySelector('.popup__close-card');
   const imageBig = document.querySelector('.popup__image');
   const config = {
-    baseUrl: 'https://praktikum.tk/cohort11',
+    baseUrl: 'https://nomoreparties.co/cohort11',
     headers: {
       authorization: '7d95c706-9e8f-4c57-8114-78c17868a168',
       'Content-Type': 'application/json',
